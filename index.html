@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script type="text/javascript" src="js/node_modules/bignumber.js/bignumber.min.js"></script>
+  <script type="text/javascript" src="js/node_modules/web3/dist/web3-light.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min,js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <link href="css/custom.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <h1 id="header">Splitter Project</h1>
+  <h3 id="headerAddr">Splitter Contract:</h1>
+  <h3 id="headerBal">Splitter Balance:</h1>
+  <!-- <button type="button" onClick="getAliceBalance();">Split Funds</button>
+  <div>
+    <p id="aliceAddr">Alice Address: </p>
+    <p id="aliceBal">Alice Balance: </p>
+  </div>
+  <div id="bobAddr">Bob Address: </div>
+  <div id="carolAddr">Carol Address: </div>
+  <div id="diff"></div> -->
+  <!-- <div class="container">
+    <div class="row">
+      <div class="col-sm-4 bg-success">
+        <p id="aliceBal">Alice Address:</p>
+        <p>Alice Balance:</p>
+      </div>
+      <div class="col-sm-4 bg-warning">
+        <p>Bob Address:</p>
+        <p>Bob Balance:</p>
+      </div>
+      <div class="col-sm-4 bg-success">
+        <p>Carol Address:</p>
+        <p>Carol Balance:</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4 bg-success">
+      </div>
+      <div class="col-sm-4 bg-primary">
+        <form>
+          First name:<br>
+          <input type="text" name="firstname">
+          <br>
+          Last name:<br>
+          <input type="text" name="lastname">
+        </form>      </div>
+      <div class="col-sm-4 bg-success">
+      </div>
+    </div>
+  </div>
+  </div> -->
+  <div class="row">
+    <div class="block">ALICE
+      <div id="aliceAddr" class="block">Address:</div>
+      <div id="aliceBal" class="block">Balance:</div>
+    </div>
+    <div class="block">BOB
+      <div id="bobAddr" class="block">Address:</div>
+      <div id="bobBal" class="block">Balance:</div>
+    </div>
+    <div class="block">CAROL
+      <div id="carolAddr" class="block">Address:</div>
+      <div id="carolBal" class="block">Balance:</div>
+    </div>
+  </div>
+
+  <form class="form-inline">
+    <div class="form-group">
+      <label for="text">Amount to split:</label>
+      <input type="text" class="form-control" id="amount">
+    </div>
+    <button id="submit" type="submit" class="btn btn-default" onclick="sendFunds();">Submit</button>
+  </form>
+
+</body>
+
+</html>
