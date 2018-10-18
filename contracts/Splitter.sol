@@ -10,7 +10,7 @@ contract Splitter {
   address bobAddr = address(0x8b070595588afe0cd0b46ef0129edf70bcfed99d);
   address carolAddr = address(0x6985c56691276c72720a67740db96300effffab2);
 
-  constructor() public {
+  constructor(address alice, ) public {
 
   }
 
