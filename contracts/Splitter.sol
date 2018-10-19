@@ -1,64 +1,74 @@
 pragma solidity ^0.4.23;
 
+import "./SafeMath.sol";
+
 contract Splitter {
 
-  /* address aliceAddr = address(0xc639c631b7266ff3db41c6ea47a2327f9ccd7b6c);
-  address bobAddr = address(0xec6d6bf5c78b472a09dad4ff28b5515133214d20);
-  address carolAddr = address(0xb77ae4cb57931d8a5129860372bc28b43ee606b6); */
+  using SafeMath for uint;
 
-  address aliceAddr = address(0x163935d8bc423c74aae135d14d21711c8e5216e5);
-  address bobAddr = address(0x8b070595588afe0cd0b46ef0129edf70bcfed99d);
-  address carolAddr = address(0x6985c56691276c72720a67740db96300effffab2);
+  address aliceAddress;
+  address bobAddress;
+  address carolAddress;
+  address owner;
+  bool stopped;
 
-  constructor(address alice, ) public {
+  mapping(address => uint) balances;
 
+  constructor(address _aliceAddress, address _bobAddress, address _carolAddress) public {
+    aliceAddress = _aliceAddress;
+    bobAddress = _bobAddress;
+    carolAddress = _carolAddress;
+    owner = msg.sender;
   }
 
-  function getSplitterAddress() public view returns (address){
-    return address(this);
+   event LogFundsDistributed(address, address, uint, address, uint);
+
+  modifier isAdmin() {
+    if(msg.sender != owner) {
+        revert();
+    }
+    _;
   }
 
-  function getSplitterBalance() public view returns (uint){
-    return address(this).balance;
+   function toggleContractActive() isAdmin public
+   {
+    // You can add an additional modifier that restricts stopping a contract to be based on another action, such as a vote of users
+     stopped = !stopped;
+   }
+
+   modifier stopInEmergency { if (!stopped) _; }
+   modifier onlyInEmergency { if (stopped) _; }
+
+
+  function splitFunds(uint fundAmount) internal pure returns (uint splitAmount, uint remainder) {
+    remainder = fundAmount.mod(2);
+    splitAmount = fundAmount.div(2);
+    return (splitAmount, remainder);
   }
 
-  function getIndividualBalance(address personAddr) public view returns (uint) {
-    return address(personAddr).balance;
+  function receiveFunds() stopInEmergency public payable {
+     require (msg.sender == aliceAddress);
+     require (msg.value > 0);
+     uint amount = msg.value;
+     uint splitAmount;
+     uint remainder;
+     (splitAmount, remainder) = splitFunds(amount);
+     balances[bobAddress] += splitAmount;
+     bobAddress.transfer(splitAmount);
+     balances[carolAddress] += splitAmount;
+     carolAddress.transfer(splitAmount);
+     if (remainder > 0) {
+       msg.sender.transfer(remainder);
+     }
+     emit LogFundsDistributed(bobAddress, carolAddress, splitAmount, msg.sender, remainder);
   }
 
-  function getAliceBalance() public view returns (uint) {
-    return aliceAddr.balance;
+  function getBalances() public view returns (uint, uint, uint) {
+    return (aliceAddress.balance, bobAddress.balance, carolAddress.balance);
   }
 
-  function getBobBalance() public view returns (uint) {
-    return bobAddr.balance;
-  }
-
-  function getCarolBalance() public view returns (uint) {
-    return carolAddr.balance;
-  }
-
-  function getAliceAddress() public view returns (address) {
-    return aliceAddr;
-  }
-
-  function getBobAddress() public view returns (address) {
-    return bobAddr;
-  }
-
-  function getCarolAddress() public view returns (address) {
-    return carolAddr;
-  }
-
-  function sendFromAlice() payable public returns (uint) {
-    uint fullAmount = msg.value;
-    uint bobAmount = fullAmount / 2;
-    uint carolAmount = fullAmount / 2;
-
-    bobAddr.transfer(bobAmount);
-    carolAddr.transfer(carolAmount);
-    return bobAmount;
-
+  function getMappingBalances() public view returns (uint, uint, uint) {
+    return (balances[aliceAddress], balances[bobAddress], balances[carolAddress]);
   }
 
 }
